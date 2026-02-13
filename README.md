@@ -314,7 +314,7 @@ When you run the application, you'll see:
 ║   RIDE SHARING SYSTEM (Uber/Pathao)   ║
 ╚════════════════════════════════════════╝
 
-Please register drivers and riders to begin.
+📦 System initialized. Please register drivers and riders to begin.
 
 ╔════════════════════════════════════════╗
 ║            MAIN MENU                   ║
