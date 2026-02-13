@@ -1,0 +1,14 @@
+C:\Users\user\Desktop\RiadMEhedi\AsthaIT\OOP\Assignment02\RideSharing\bin\Debug\net10.0\RideSharing.exe
+C:\Users\user\Desktop\RiadMEhedi\AsthaIT\OOP\Assignment02\RideSharing\bin\Debug\net10.0\RideSharing.deps.json
+C:\Users\user\Desktop\RiadMEhedi\AsthaIT\OOP\Assignment02\RideSharing\bin\Debug\net10.0\RideSharing.runtimeconfig.json
+C:\Users\user\Desktop\RiadMEhedi\AsthaIT\OOP\Assignment02\RideSharing\bin\Debug\net10.0\RideSharing.dll
+C:\Users\user\Desktop\RiadMEhedi\AsthaIT\OOP\Assignment02\RideSharing\bin\Debug\net10.0\RideSharing.pdb
+C:\Users\user\Desktop\RiadMEhedi\AsthaIT\OOP\Assignment02\RideSharing\obj\Debug\net10.0\RideSharing.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\Desktop\RiadMEhedi\AsthaIT\OOP\Assignment02\RideSharing\obj\Debug\net10.0\RideSharing.AssemblyInfoInputs.cache
+C:\Users\user\Desktop\RiadMEhedi\AsthaIT\OOP\Assignment02\RideSharing\obj\Debug\net10.0\RideSharing.AssemblyInfo.cs
+C:\Users\user\Desktop\RiadMEhedi\AsthaIT\OOP\Assignment02\RideSharing\obj\Debug\net10.0\RideSharing.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\RiadMEhedi\AsthaIT\OOP\Assignment02\RideSharing\obj\Debug\net10.0\RideSharing.dll
+C:\Users\user\Desktop\RiadMEhedi\AsthaIT\OOP\Assignment02\RideSharing\obj\Debug\net10.0\refint\RideSharing.dll
+C:\Users\user\Desktop\RiadMEhedi\AsthaIT\OOP\Assignment02\RideSharing\obj\Debug\net10.0\RideSharing.pdb
+C:\Users\user\Desktop\RiadMEhedi\AsthaIT\OOP\Assignment02\RideSharing\obj\Debug\net10.0\RideSharing.genruntimeconfig.cache
+C:\Users\user\Desktop\RiadMEhedi\AsthaIT\OOP\Assignment02\RideSharing\obj\Debug\net10.0\ref\RideSharing.dll
