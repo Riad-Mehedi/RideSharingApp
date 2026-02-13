@@ -1,122 +1,197 @@
-# 🚗 Ride Sharing System 
+# Ride Sharing System (Uber/Pathao)
 
-A comprehensive C# console application implementing a ride-sharing platform similar to Uber or Pathao. This project demonstrates core Object-Oriented Programming principles and six essential Design Patterns.
+A console-based ride-sharing application built with C# demonstrating Object-Oriented Programming principles and Design Patterns.
+
+---
 
 ## 📋 Table of Contents
 
 - [Project Overview](#project-overview)
-- [Design Patterns Implemented](#design-patterns-implemented)
+- [Features](#features)
+- [Design Patterns Used](#design-patterns-used)
 - [Project Structure](#project-structure)
 - [System Requirements](#system-requirements)
-- [Installation & Setup](#installation--setup)
-- [How to Run](#how-to-run)
-- [Features](#features)
-- [Design Pattern Details](#design-pattern-details)
-- [OOP Principles](#oop-principles)
+- [How to Run the Application](#how-to-run-the-application)
 - [Usage Guide](#usage-guide)
-- [Testing](#testing)
+- [Technologies Used](#technologies-used)
 
 ---
 
 ## 🎯 Project Overview
 
-This Ride Sharing System is designed to manage riders, drivers, rides, and payments in a professional and scalable manner. The system allows:
+This Ride Sharing System is a comprehensive C# console application that simulates the core functionality of ride-sharing platforms like Uber and Pathao. The system allows users to register as drivers or riders, create rides with dynamic pricing strategies, process payments through multiple methods, and receive real-time notifications about ride status updates.
 
-- **User Management**: Register and manage riders and drivers
-- **Vehicle Management**: Support for multiple vehicle types (Bike, CNG, Car)
-- **Dynamic Pricing**: Different pricing strategies based on time and demand
-- **Payment Processing**: Integration with multiple payment gateways
-- **Real-time Notifications**: Status updates for riders and drivers
+**Key Highlights:**
+- Implements 6 major design patterns
+- Follows SOLID principles
+- Clean code architecture with separation of concerns
+- Menu-driven interface for easy interaction
 
 ---
 
-## 🏗️ Design Patterns Implemented
+## ✨ Features
 
-This project implements **6 major design patterns** as required:
+### User Management
+- ✅ Register drivers with different vehicle types
+- ✅ Register riders with wallet balance
+- ✅ View all registered users
+- ✅ Filter drivers by vehicle type and availability
+
+### Ride Management
+- ✅ Create rides with rider and driver selection
+- ✅ Calculate fares using different pricing strategies
+- ✅ Update ride status (Requested → Accepted → In Progress → Completed)
+- ✅ View all rides and their details
+
+### Payment Processing
+- ✅ Support for multiple payment methods (bKash, Credit Card)
+- ✅ Wallet-based transactions
+- ✅ Payment confirmation and receipt
+
+### Notifications
+- ✅ SMS notifications for riders
+- ✅ App notifications for drivers
+- ✅ Real-time status updates
+
+---
+
+## 🏗️ Design Patterns Used
 
 ### 1. **Factory Pattern** 
-- **Purpose**: Create different vehicle types without exposing instantiation logic
-- **Implementation**: `VehicleFactory` creates `Bike`, `CNG`, and `Car` objects
-- **Location**: `Vehicles/VehicleFactory.cs`
-- **Benefits**: 
-  - Easy to add new vehicle types
-  - Centralized vehicle creation
-  - Loose coupling between client and concrete classes
+**Location:** `Vehicles/VehicleFactory.cs`
 
-### 2. **Singleton Pattern** 
-- **Purpose**: Ensure only one instance of RideManager exists system-wide
-- **Implementation**: `RideManager` with thread-safe double-check locking
-- **Location**: `Management/RideManager.cs`
-- **Benefits**:
-  - Centralized driver registry
-  - Global access point
-  - Thread-safe implementation
+**Purpose:** Creates different types of vehicles (Bike, CNG, Car) without exposing instantiation logic.
 
-### 3. **Strategy Pattern** 
-- **Purpose**: Dynamic pricing calculation based on different strategies
-- **Implementation**: `IPricingStrategy` with three concrete strategies
-  - StandardPricing: $0.50/km
-  - RushHourPricing: $1.00/km
-  - MidnightPricing: $0.75/km
-- **Location**: `Pricing/` folder
-- **Benefits**:
-  - Runtime algorithm switching
-  - Easy to add new pricing models
-  - Encapsulates pricing logic
+**Components:**
+- `IVehicle.cs` - Interface
+- `Bike.cs`, `CNG.cs`, `Car.cs` - Concrete implementations
+- `VehicleFactory.cs` - Factory class with `CreateVehicle()` method
 
-### 4. **Adapter Pattern** 
-- **Purpose**: Integrate external bKash payment gateway with our system
-- **Implementation**: `BkashPaymentAdapter` adapts `BkashPaymentGateway` to `IPaymentProcessor`
-- **Location**: `Payments/BkashPaymentAdapter.cs`
-- **Benefits**:
-  - Works with incompatible interfaces
-  - No modification to existing BkashPaymentGateway
-  - Flexible payment method integration
+**Example:**
+```csharp
+IVehicle vehicle = VehicleFactory.CreateVehicle("Bike");
+```
 
-### 5. **Observer Pattern** 
-- **Purpose**: Notify riders and drivers when ride status changes
-- **Implementation**: `IRideObserver` with `RiderNotifier` (SMS) and `DriverNotifier` (App)
-- **Location**: `Observers/` folder
-- **Benefits**:
-  - Loose coupling between Ride and Notifiers
-  - Easy to add new notification types
-  - Automatic updates on state change
+---
 
-### 6. **Inheritance & Polymorphism** 
-- **Purpose**: Create user hierarchy with shared behavior
-- **Implementation**: Abstract `User` class with `Rider` and `Driver` subclasses
-- **Location**: `Users/` folder
-- **Benefits**:
-  - Code reusability
-  - Polymorphic behavior
-  - Clear IS-A relationships
+### 2. **Singleton Pattern**
+**Location:** `Management/RideManager.cs`
+
+**Purpose:** Ensures only one instance of RideManager exists throughout the application to manage all drivers centrally.
+
+**Implementation:**
+- Private constructor
+- Private static instance with thread-safe double-check locking
+- Public `GetInstance()` method
+
+**Example:**
+```csharp
+RideManager manager = RideManager.GetInstance();
+```
+
+---
+
+### 3. **Strategy Pattern**
+**Location:** `Pricing/` folder
+
+**Purpose:** Allows dynamic selection of pricing algorithms at runtime.
+
+**Components:**
+- `IPricingStrategy.cs` - Strategy interface
+- `StandardPricing.cs` - $0.50 per km
+- `RushHourPricing.cs` - $1.00 per km
+- `MidnightPricing.cs` - $0.75 per km
+
+**Example:**
+```csharp
+ride.SetPricingStrategy(new RushHourPricing());
+double fare = ride.CalculateFare();
+```
+
+---
+
+### 4. **Adapter Pattern**
+**Location:** `Payments/BkashPaymentAdapter.cs`
+
+**Purpose:** Adapts the incompatible `BkashPaymentGateway` interface to work with the `IPaymentProcessor` interface.
+
+**Components:**
+- `IPaymentProcessor.cs` - Target interface
+- `BkashPaymentGateway.cs` - External service (Adaptee)
+- `BkashPaymentAdapter.cs` - Adapter class
+- `CreditCardProcessor.cs` - Direct implementation
+
+**Example:**
+```csharp
+IPaymentProcessor payment = new BkashPaymentAdapter();
+payment.Pay("01711111111", 100.00);
+```
+
+---
+
+### 5. **Observer Pattern**
+**Location:** `Observers/` folder
+
+**Purpose:** Notifies multiple observers (Rider, Driver) when ride status changes.
+
+**Components:**
+- `IRideObserver.cs` - Observer interface
+- `RiderNotifier.cs` - Sends SMS to riders
+- `DriverNotifier.cs` - Sends app notifications to drivers
+
+**Example:**
+```csharp
+ride.AddObserver(new RiderNotifier(rider));
+ride.AddObserver(new DriverNotifier(driver));
+ride.SetStatus("Accepted"); // Both get notified
+```
+
+---
+
+### 6. **Inheritance & Polymorphism**
+**Location:** `Users/` folder
+
+**Purpose:** Provides a common base class for all users with specialized behavior in derived classes.
+
+**Components:**
+- `User.cs` - Abstract base class
+- `Rider.cs` - Extends User with wallet functionality
+- `Driver.cs` - Extends User with vehicle and availability
+
+**Example:**
+```csharp
+User user = new Rider("R001", "Sara", "01711111111", 500.0);
+user.DisplayInfo(); // Polymorphic call
+```
+
 ---
 
 ## 📁 Project Structure
+
 ```
 RideSharing/
 │
-├── README.md                           # Project documentation
 ├── Program.cs                          # Main entry point
-├── RideSharing.csproj                  # Project configuration
+├── RideSharing.csproj                  # Project configuration file
+├── README.md                           # Project documentation
 │
 ├── Users/                              # User Management (Inheritance & Polymorphism)
 │   ├── User.cs                         # Abstract base class
-│   ├── Rider.cs                        # Rider with wallet balance
-│   └── Driver.cs                       # Driver with vehicle and availability
+│   ├── Rider.cs                        # Rider with wallet
+│   └── Driver.cs                       # Driver with vehicle
 │
 ├── Vehicles/                           # Vehicle Management (Factory Pattern)
 │   ├── IVehicle.cs                     # Vehicle interface
-│   ├── Bike.cs                         # Bike ($2 base fare)
-│   ├── CNG.cs                          # CNG ($3 base fare)
-│   ├── Car.cs                          # Car ($5 base fare)
+│   ├── Bike.cs                         # Bike implementation ($2)
+│   ├── CNG.cs                          # CNG implementation ($3)
+│   ├── Car.cs                          # Car implementation ($5)
 │   └── VehicleFactory.cs               # Factory for creating vehicles
 │
-├── Management/                         # Driver Registry (Singleton Pattern)
-│   └── RideManager.cs                  # Singleton driver manager
+├── Management/                         # Central Management (Singleton Pattern)
+│   └── RideManager.cs                  # Singleton driver registry
 │
 ├── Rides/                              # Ride Management
-│   └── Ride.cs                         # Ride entity with observers
+│   └── Ride.cs                         # Ride with Strategy & Observer patterns
 │
 ├── Pricing/                            # Pricing Strategies (Strategy Pattern)
 │   ├── IPricingStrategy.cs             # Strategy interface
@@ -126,7 +201,7 @@ RideSharing/
 │
 ├── Payments/                           # Payment Processing (Adapter Pattern)
 │   ├── IPaymentProcessor.cs            # Payment interface
-│   ├── BkashPaymentGateway.cs          # External bKash gateway (locked)
+│   ├── BkashPaymentGateway.cs          # External bKash service
 │   ├── BkashPaymentAdapter.cs          # Adapter for bKash
 │   └── CreditCardProcessor.cs          # Credit card processor
 │
@@ -143,341 +218,278 @@ RideSharing/
     └── PaymentOperations.cs            # Payment-related operations
 ```
 
-**Total Files: 28 C# files**
-
 ---
 
 ## 💻 System Requirements
 
 ### Prerequisites
-- **.NET SDK 6.0** or higher
-- **Visual Studio Code** (recommended) or Visual Studio
-- **Git Bash** or PowerShell (for terminal commands)
 
-### Development Environment
-- **Operating System**: Windows 10/11, macOS, or Linux
-- **IDE**: Visual Studio Code with C# extension
-- **Terminal**: Git Bash, PowerShell, or CMD
+1. **.NET SDK** (Version 6.0 or higher)
+   - Download from: [https://dotnet.microsoft.com/download](https://dotnet.microsoft.com/download)
+
+2. **Text Editor or IDE** (Choose one)
+   - Visual Studio Code (Recommended)
+   - Visual Studio 2022
+   - JetBrains Rider
+
+3. **Operating System**
+   - Windows 10/11
+   - macOS
+   - Linux
 
 ---
 
-## 🚀 Installation & Setup
+## 🚀 How to Run the Application
 
-### Step 1: Clone or Download the Project
-```bash
-# If using Git
-git clone <repository-url>
+### Method 1: Using Command Line / Terminal
 
-# Or download and extract the ZIP file
-```
-
-### Step 2: Navigate to Project Folder
+#### Step 1: Navigate to Project Directory
 ```bash
 cd RideSharing
 ```
 
-### Step 3: Restore Dependencies
+#### Step 2: Restore Dependencies
 ```bash
 dotnet restore
 ```
 
-### Step 4: Build the Project
+#### Step 3: Build the Project
 ```bash
 dotnet build
 ```
 
-You should see: **Build succeeded**
-
----
-
-## ▶️ How to Run
-
-### Method 1: Using Terminal
+#### Step 4: Run the Application
 ```bash
 dotnet run
 ```
 
-### Method 2: Using VS Code
-1. Open the project in VS Code
-2. Press `F5` to run in debug mode
-3. Or press `Ctrl + F5` to run without debugging
+---
 
-### Method 3: Using Built Executable
+### Method 2: Using Visual Studio Code
+
+#### Step 1: Open Project
+1. Open VS Code
+2. Click **File** → **Open Folder**
+3. Select the `RideSharing` folder
+
+#### Step 2: Open Terminal
+- Press `` Ctrl + ` `` (backtick) or
+- Go to **Terminal** → **New Terminal**
+
+#### Step 3: Run Commands
 ```bash
+dotnet restore
 dotnet build
-cd bin/Debug/net6.0/
-./RideSharing.exe    # Windows
-./RideSharing        # macOS/Linux
+dotnet run
 ```
 
----
-
-## 🎮 Features
-
-### 1. User Management
-- ✅ Register Riders with wallet balance
-- ✅ Register Drivers with vehicle assignment
-- ✅ View all users
-- ✅ Display user information polymorphically
-
-### 2. Vehicle Management
-- ✅ Three vehicle types: Bike ($2), CNG ($3), Car ($5)
-- ✅ Factory-based vehicle creation
-- ✅ Easy to extend with new vehicle types
-
-### 3. Driver Management
-- ✅ Centralized driver registry (Singleton)
-- ✅ Filter drivers by vehicle type
-- ✅ Track driver availability status
-- ✅ Thread-safe operations
-
-### 4. Ride Management
-- ✅ Create rides with rider, driver, and distance
-- ✅ Dynamic pricing strategy selection
-- ✅ Ride status tracking: Requested → Accepted → In Progress → Completed
-- ✅ Observer-based notifications
-
-### 5. Pricing System
-- ✅ Standard Pricing: $0.50 per km
-- ✅ Rush Hour Pricing: $1.00 per km
-- ✅ Midnight Pricing: $0.75 per km
-- ✅ Runtime strategy switching
-
-### 6. Payment Processing
-- ✅ bKash payment integration (Adapter Pattern)
-- ✅ Credit Card payment support
-- ✅ Wallet deduction for riders
-- ✅ Transaction tracking
-
-### 7. Notification System
-- ✅ SMS notifications for riders
-- ✅ App notifications for drivers
-- ✅ Automatic updates on status change
-- ✅ Observable pattern implementation
+#### Alternative: Use F5 (Debug Mode)
+1. Press `F5`
+2. Select **C#** if prompted
+3. Application will start
 
 ---
 
-## 🔍 Design Pattern Details
+### Method 3: Using Visual Studio 2022
 
-### Factory Pattern Implementation
+#### Step 1: Open Project
+1. Open Visual Studio 2022
+2. Click **Open a project or solution**
+3. Select `RideSharing.csproj`
 
-**Problem:** Need to create different vehicle types without tight coupling
-
-**Solution:** VehicleFactory centralizes object creation
-```csharp
-// Usage
-IVehicle vehicle = VehicleFactory.CreateVehicle("Bike");
-```
-
-**Benefits:**
-- Single point of vehicle creation
-- Easy to add new vehicle types
-- Client code doesn't need to know concrete classes
-
----
-
-### Singleton Pattern Implementation
-
-**Problem:** Need single centralized driver registry
-
-**Solution:** RideManager with thread-safe singleton
-```csharp
-// Always returns the same instance
-RideManager manager = RideManager.GetInstance();
-```
-
-**Benefits:**
-- Only one instance exists
-- Global access point
-- Thread-safe with double-check locking
-
----
-
-### Strategy Pattern Implementation
-
-**Problem:** Need different pricing algorithms
-
-**Solution:** IPricingStrategy with concrete implementations
-```csharp
-// Switch strategies at runtime
-ride.SetPricingStrategy(new RushHourPricing());
-double fare = ride.CalculateFare();
-```
-
-**Benefits:**
-- Runtime algorithm selection
-- Easy to add new strategies
-- Encapsulated pricing logic
-
----
-
-### Adapter Pattern Implementation
-
-**Problem:** BkashPaymentGateway has incompatible interface
-
-**Solution:** BkashPaymentAdapter bridges the gap
-```csharp
-// Works with IPaymentProcessor interface
-IPaymentProcessor payment = new BkashPaymentAdapter();
-payment.Pay(phoneNumber, amount);
-```
-
-**Benefits:**
-- Integrates external APIs seamlessly
-- No modification to BkashPaymentGateway
-- Consistent payment interface
-
----
-
-### Observer Pattern Implementation
-
-**Problem:** Need to notify multiple parties on state change
-
-**Solution:** IRideObserver with concrete notifiers
-```csharp
-// Add observers
-ride.AddObserver(new RiderNotifier(rider));
-ride.AddObserver(new DriverNotifier(driver));
-
-// All observers notified automatically
-ride.SetStatus("Accepted");
-```
-
-**Benefits:**
-- Loose coupling
-- Easy to add new observer types
-- Automatic notifications
-
----
-
-## 🎯 OOP Principles Demonstrated
-
-### 1. Encapsulation
-- Private fields with public properties
-- Data hiding in classes
-- Controlled access to object state
-
-### 2. Inheritance
-- User → Rider, Driver hierarchy
-- Code reusability through base class
-- IS-A relationships
-
-### 3. Polymorphism
-- Abstract methods in User class
-- Different implementations in derived classes
-- Runtime method binding
-
-### 4. Abstraction
-- Interfaces (IVehicle, IPricingStrategy, etc.)
-- Abstract classes (User)
-- Hide implementation details
-
-### 5. SOLID Principles
-- **S**ingle Responsibility: Each class has one job
-- **O**pen/Closed: Easy to extend, closed for modification
-- **L**iskov Substitution: Derived classes work as base
-- **I**nterface Segregation: Focused interfaces
-- **D**ependency Inversion: Depend on abstractions
+#### Step 2: Run Application
+- Press `F5` or `Ctrl + F5`
+- Or click the **green play button** (▶️)
 
 ---
 
 ## 📖 Usage Guide
 
-### Example Workflow
+### Starting the Application
 
-#### 1. Register Drivers
-```
-Choose option: 1
-Enter Driver ID: D001
-Enter Driver Name: Ahmed Ali
-Enter Phone Number: 01711111111
-Select Vehicle Type: 1 (Bike)
-✅ Driver registered successfully!
-```
+When you run the application, you'll see:
 
-#### 2. Register Riders
 ```
-Choose option: 2
-Enter Rider ID: R001
-Enter Rider Name: Sara Khan
-Enter Phone Number: 01722222222
-Enter Initial Wallet Balance: 500
-✅ Rider registered successfully!
-```
+╔════════════════════════════════════════╗
+║   RIDE SHARING SYSTEM (Uber/Pathao)   ║
+╚════════════════════════════════════════╝
 
-#### 3. Create Ride
-```
-Choose option: 6
-Select Rider: 1 (Sara Khan)
-Select Driver: 1 (Ahmed Ali - Bike)
-Enter Distance: 10 km
-Select Pricing Strategy: 2 (Rush Hour)
+Please register drivers and riders to begin.
 
-✅ Ride created successfully!
-Fare: $12.00 ($2 base + $10 for 10km at $1/km)
+╔════════════════════════════════════════╗
+║            MAIN MENU                   ║
+╚════════════════════════════════════════╝
+1. Register Driver
+2. Register Rider
+3. View All Drivers
+4. View Available Drivers by Vehicle Type
+5. View All Riders
+6. Create Ride
+7. Update Ride Status
+8. View All Rides
+9. Process Payment
+0. Exit
 
-[SMS to Sara Khan]: Ride RIDE0001 is now Requested
-[App Notification to Ahmed Ali]: Ride RIDE0001 is now Requested
-```
-
-#### 4. Update Ride Status (Observer Pattern Demo)
-```
-Choose option: 7
-Select Ride: 1 (RIDE0001)
-Select New Status: 2 (Accepted)
-
-[SMS to Sara Khan]: Ride RIDE0001 is now Accepted
-[App Notification to Ahmed Ali]: Ride RIDE0001 is now Accepted
-✅ Ride status updated!
-```
-
-#### 5. Process Payment (Adapter Pattern Demo)
-```
-Choose option: 9
-Select Ride: 1 (RIDE0001 - $12.00)
-Select Payment Method: 1 (bKash)
-Enter bKash Phone Number: 01722222222
-
-bKash: Sending $12.00 to 01722222222
-bKash: TXN1234 successful
-✅ Payment of $12.00 completed successfully!
+Enter your choice: 
 ```
 
 ---
 
-## 🧪 Testing
+### Step-by-Step Workflow
 
-### Test Cases
+#### 1️⃣ **Register Drivers** (Option 1)
 
-#### Test 1: Factory Pattern
-- Create Bike, CNG, Car vehicles
-- Verify correct base fares
-- **Expected**: Different vehicle objects with correct fares
+```
+Enter your choice: 1
 
-#### Test 2: Singleton Pattern
-- Call `RideManager.GetInstance()` multiple times
-- Compare instances
-- **Expected**: Same instance returned
+╔════════════════════════════════════════╗
+║         REGISTER NEW DRIVER            ║
+╚════════════════════════════════════════╝
+Enter Driver ID: D001
+Enter Driver Name: Ahmed Ali
+Enter Phone Number: 01711111111
 
-#### Test 3: Strategy Pattern
-- Create ride with Standard pricing
-- Switch to Rush Hour pricing
-- Calculate fares
-- **Expected**: Different fare calculations
+Select Vehicle Type:
+1. Bike ($2 base fare)
+2. CNG ($3 base fare)
+3. Car ($5 base fare)
+Enter choice (1-3): 1
 
-#### Test 4: Adapter Pattern
-- Process payment via bKash
-- Process payment via Credit Card
-- **Expected**: Both work through same interface
+✅ Driver registered successfully!
+```
 
-#### Test 5: Observer Pattern
-- Update ride status
-- Check console output
-- **Expected**: Both rider and driver notified
+**Repeat** to register 2-3 drivers with different vehicle types.
 
-#### Test 6: Inheritance & Polymorphism
-- Call `DisplayInfo()` on Rider and Driver
-- **Expected**: Different implementations execute
+---
+
+#### 2️⃣ **Register Riders** (Option 2)
+
+```
+Enter your choice: 2
+
+╔════════════════════════════════════════╗
+║         REGISTER NEW RIDER             ║
+╚════════════════════════════════════════╝
+Enter Rider ID: R001
+Enter Rider Name: Sara Khan
+Enter Phone Number: 01744444444
+Enter Initial Wallet Balance: $500
+
+✅ Rider registered successfully!
+```
+
+**Repeat** to register 2-3 riders.
+
+---
+
+#### 3️⃣ **Create a Ride** (Option 6)
+
+```
+Enter your choice: 6
+
+Available Riders:
+1. Sara Khan (ID: R001)
+Select Rider (enter number): 1
+
+Available Drivers:
+1. Ahmed Ali - Bike (ID: D001)
+Select Driver (enter number): 1
+
+Enter Distance (km): 10
+
+Select Pricing Strategy:
+1. Standard Pricing ($0.50/km)
+2. Rush Hour Pricing ($1.00/km)
+3. Midnight Pricing ($0.75/km)
+Enter choice (1-3): 2
+
+Pricing strategy set to: Rush Hour Pricing
+
+=== Ride Information ===
+Ride ID: RIDE0001
+Rider: Sara Khan
+Driver: Ahmed Ali
+Vehicle: Bike
+Distance: 10 km
+Status: Requested
+Pricing Strategy: Rush Hour Pricing
+Fare: $12.00
+=======================
+
+[SMS to Sara Khan (01744444444)]: Ride RIDE0001 is now Requested
+[App Notification to Ahmed Ali]: Ride RIDE0001 is now Requested
+
+✅ Ride created successfully!
+```
+
+---
+
+#### 4️⃣ **Update Ride Status** (Option 7) - **Observer Pattern Demo**
+
+```
+Enter your choice: 7
+
+Active Rides:
+1. RIDE0001 - Sara Khan to Ahmed Ali - Status: Requested
+
+Select Ride (enter number): 1
+
+Select New Status:
+1. Requested
+2. Accepted
+3. In Progress
+4. Completed
+Enter choice (1-4): 2
+
+[SMS to Sara Khan (01744444444)]: Ride RIDE0001 is now Accepted
+[App Notification to Ahmed Ali]: Ride RIDE0001 is now Accepted
+
+✅ Ride status updated to: Accepted
+```
+
+**Notice:** Both Rider and Driver receive notifications! (Observer Pattern)
+
+---
+
+#### 5️⃣ **Process Payment** (Option 9) - **Adapter Pattern Demo**
+
+```
+Enter your choice: 9
+
+Completed Rides:
+1. RIDE0001 - Fare: $12.00
+
+Select Ride for Payment (enter number): 1
+
+Ride: RIDE0001
+Total Fare: $12.00
+
+Select Payment Method:
+1. bKash
+2. Credit Card
+Enter choice (1-2): 1
+
+Enter bKash Phone Number: 01744444444
+
+💳 Processing payment via bKash...
+bKash: Sending $12 to 01744444444
+TXN1234
+bKash: TXN1234 successful
+
+✅ Payment of $12.00 completed successfully!
+Amount deducted from Sara Khan's wallet.
+Remaining balance: $488.00
+```
+
+---
+
+## 🛠️ Technologies Used
+
+- **Language:** C# 10.0
+- **Framework:** .NET 6.0
+- **Architecture:** Layered Architecture
+- **Design Patterns:** Factory, Singleton, Strategy, Adapter, Observer
+- **Principles:** SOLID, DRY, Separation of Concerns
 
 ---
 
@@ -485,9 +497,33 @@ bKash: TXN1234 successful
 
 This project demonstrates:
 
-1. ✅ **Design Pattern Implementation**: All 6 patterns correctly applied
-2. ✅ **OOP Mastery**: Encapsulation, Inheritance, Polymorphism, Abstraction
-3. ✅ **Clean Code**: Proper organization and separation of concerns
-4. ✅ **SOLID Principles**: Professional code architecture
-5. ✅ **Real-World Application**: Practical ride-sharing system
-6. ✅ **Scalability**: Easy to extend and maintain
+1. ✅ **Factory Pattern** - Centralized object creation
+2. ✅ **Singleton Pattern** - Single instance management
+3. ✅ **Strategy Pattern** - Runtime algorithm selection
+4. ✅ **Adapter Pattern** - Interface compatibility
+5. ✅ **Observer Pattern** - Event notification system
+6. ✅ **Inheritance & Polymorphism** - Code reusability
+7. ✅ **SOLID Principles** - Clean code architecture
+8. ✅ **Separation of Concerns** - Organized code structure
+
+---
+
+## 📞 Troubleshooting
+
+### Issue: "dotnet command not found"
+**Solution:** 
+- Install .NET SDK from [dotnet.microsoft.com](https://dotnet.microsoft.com/download)
+- Restart terminal after installation
+
+### Issue: Build errors
+**Solution:**
+```bash
+dotnet clean
+dotnet restore
+dotnet build
+```
+
+### Issue: Can't see output
+**Solution:**
+- Make sure you're running `dotnet run` in the **RideSharing** folder
+- Check that all `.cs` files are properly saved
